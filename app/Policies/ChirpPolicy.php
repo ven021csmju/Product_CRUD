@@ -38,7 +38,7 @@ class ChirpPolicy
     public function update(User $user, Chirp $chirp): bool
     {
         return $chirp->user()->is($user);
-    }
+    } //เช็คสิทว่าเจ้าของ serve เป้นคนเดียวกันป่าว
 
     /**
      * Determine whether the user can delete the model.

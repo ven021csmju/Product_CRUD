@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useForm, usePage } from '@inertiajs/react';
 
-dayjs.extend(relativeTime);
+dayjs.extend(relativeTime); //ใช้เปรียบเทียบเวลา
 
 export default function Chirp({ chirp }) {
     const { auth } = usePage().props;
@@ -29,8 +29,10 @@ export default function Chirp({ chirp }) {
             <div className="flex-1">
                 <div className="flex justify-between items-center">
                     <div>
-                        <span className="text-gray-800">{chirp.user.name}</span>
-                        <small className="ml-2 text-sm text-gray-600">{dayjs(chirp.created_at).fromNow()}</small>
+                        <span className="text-gray-800">{chirp.user.name}</span> {/* ชื่อ */}
+                        <small className="ml-2 text-sm text-gray-600">{dayjs(chirp.created_at).fromNow()}</small> 
+                        {/* ใช้เปรียบเทียบเวลา */}
+
                         { chirp.created_at !== chirp.updated_at && <small className="text-sm text-gray-600"> &middot; edited</small>}
                     </div>
                     {chirp.user.id === auth.user.id &&
@@ -46,7 +48,7 @@ export default function Chirp({ chirp }) {
                                 <button className="block w-full px-4 py-2 text-left text-sm leading-5 text-gray-700 hover:bg-gray-100 focus:bg-gray-100 transition duration-150 ease-in-out" onClick={() => setEditing(true)}>
                                     Edit
                                 </button>
-                                <Dropdown.Link as="button" href={route('chirps.destroy', chirp.id)} method="delete">
+                                <Dropdown.Link as="button" href={route('chirps.destroy', chirp.id)} method="delete">  
                                     Delete
                                 </Dropdown.Link>
                             </Dropdown.Content>
