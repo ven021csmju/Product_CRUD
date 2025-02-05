@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart, customers }) => {
+    const [selectedCustomer, setSelectedCustomer] = useState('');
+
     const handleUpdateQuantity = (productId, quantity) => {
         Inertia.patch(`/cart/${productId}`, { quantity });
     };
@@ -17,12 +19,35 @@ const Cart = ({ cart }) => {
     };
 
     const handlePlaceOrder = () => {
-        Inertia.post('/orders');
+        if (!selectedCustomer) {
+            alert('Please select a customer.');
+            return;
+        }
+
+        Inertia.post('/orders', {
+            customer_id: selectedCustomer,
+            cart: Object.values(cart),
+        });
     };
 
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Cart</h1>
+            <div className="mb-4">
+                <label className="block text-gray-700">Select Customer</label>
+                <select
+                    value={selectedCustomer}
+                    onChange={(e) => setSelectedCustomer(e.target.value)}
+                    className="w-full p-2 border rounded"
+                >
+                    <option value="">Select a customer</option>
+                    {customers.map(customer => (
+                        <option key={customer.id} value={customer.id}>
+                            {customer.name}
+                        </option>
+                    ))}
+                </select>
+            </div>
             <div className="grid grid-cols-1 gap-4">
                 {Object.values(cart).map(item => (
                     <div key={item.product_id} className="border rounded-lg p-4 shadow-lg">

@@ -10,6 +10,9 @@ use App\Http\Controllers\employees;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\NewController;
+use App\Http\Controllers\GraphController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -43,5 +46,12 @@ Route::delete('/cart/{productId}', [CartController::class, 'destroy'])->name('ca
 
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+
+Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+
+Route::get('/order-status', [OrderStatusController::class, 'index'])->name('order-status.index');
+
+Route::get('/graph', [OrderStatusController::class, 'salesData'])->name('graph.index');
 
 require __DIR__.'/auth.php';

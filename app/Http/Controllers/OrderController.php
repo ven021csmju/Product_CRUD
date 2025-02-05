@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Inertia\Inertia;
+use App\Models\Customer;
 
 class OrderController extends Controller
 {
@@ -14,10 +15,15 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = Order::with('product')->get();
+        $orders = Order::with(['product', 'customer'])->orderBy('created_at', 'desc')->get();
+
+        // จัดกลุ่มตามวันที่ของคำสั่งซื้อ
+        $groupedOrders = $orders->groupBy(function ($order) {
+            return $order->created_at->format('Y-m-d H:i:s');
+        });
 
         return Inertia::render('Order/Index', [
-            'orders' => $orders
+            'groupedOrders' => $groupedOrders
         ]);
     }
 
@@ -26,7 +32,11 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        $customers = Customer::all(); // ดึงรายชื่อลูกค้าทั้งหมด
+
+        return Inertia::render('Order/Create', [
+            'customers' => $customers
+        ]);
     }
 
     /**
@@ -34,23 +44,21 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $cart = session()->get('cart', []);
-        if (empty($cart)) {
-            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
-        }
+        $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'cart' => 'required|array',
+        ]);
 
-        foreach ($cart as $item) {
+        foreach ($request->cart as $item) {
             Order::create([
-                'customer_id' => 1, // ล็อก customer_id ใว้ที่ 1
+                'customer_id' => $request->customer_id,
                 'product_id' => $item['product_id'],
                 'quantity' => $item['quantity'],
                 'total_price' => $item['price'] * $item['quantity'],
             ]);
         }
 
-        session()->forget('cart');
-
-        return redirect()->route('products.index')->with('success', 'Order placed successfully.');
+        return redirect()->route('orders.index')->with('success', 'Order placed successfully.');
     }
 
     /**

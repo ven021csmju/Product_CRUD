@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Customer;
 
 class CartController extends Controller
 {
@@ -13,7 +14,11 @@ class CartController extends Controller
     public function index()
     {
         $cart = session()->get('cart', []);
-        return Inertia::render('Cart/Index', ['cart' => $cart]);
+        $customers = Customer::all();
+        return Inertia::render('Cart/Index', [
+            'cart' => $cart,
+            'customers' => $customers,
+        ]);
     }
 
     /**
