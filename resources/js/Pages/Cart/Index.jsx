@@ -17,8 +17,7 @@ const Cart = ({ cart }) => {
     };
 
     const handlePlaceOrder = () => {
-        // Implement order placement logic here
-        alert('Order placed successfully!');
+        Inertia.post('/orders');
     };
 
     return (
