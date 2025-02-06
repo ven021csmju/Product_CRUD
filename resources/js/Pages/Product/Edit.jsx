@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Inertia } from '@inertiajs/inertia';
 
-const Create = () => {
-    const [productName, setProductName] = useState('');
-    const [price, setPrice] = useState('');
-    const [description, setDescription] = useState('');
-    const [stock, setStock] = useState('');
+const Edit = ({ product }) => {
+    const [productName, setProductName] = useState(product.product_name);
+    const [price, setPrice] = useState(product.price);
+    const [description, setDescription] = useState(product.description);
+    const [stock, setStock] = useState(product.stock);
     const [image, setImage] = useState(null);
 
     const handleSubmit = (e) => {
@@ -18,8 +18,13 @@ const Create = () => {
         if (image) {
             formData.append('image', image);
         }
+        formData.append('_method', 'PUT'); // Add this line to specify the method
 
-        Inertia.post('/products', formData);
+        Inertia.post(`/products/${product.id}`, formData, {
+            onSuccess: () => {
+                Inertia.get('/products');
+            },
+        });
     };
 
     const handleBack = () => {
@@ -28,7 +33,7 @@ const Create = () => {
 
     return (
         <div className="container mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-6">Add New Product</h1>
+            <h1 className="text-3xl font-bold mb-6">Edit Product</h1>
             <form onSubmit={handleSubmit} encType="multipart/form-data" className="space-y-4">
                 <div>
                     <label className="block text-gray-700">Product Name</label>
@@ -77,7 +82,7 @@ const Create = () => {
                     />
                 </div>
                 <div className="flex justify-between">
-                    <button type="submit" className="bg-blue-500 text-white p-2 rounded">Add Product</button>
+                    <button type="submit" className="bg-blue-500 text-white p-2 rounded">Update Product</button>
                     <button type="button" onClick={handleBack} className="bg-gray-500 text-white p-2 rounded">Back to Products</button>
                 </div>
             </form>
@@ -85,4 +90,4 @@ const Create = () => {
     );
 };
 
-export default Create;
+export default Edit;

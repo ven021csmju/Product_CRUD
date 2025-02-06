@@ -31,9 +31,9 @@ const Cart = ({ cart, customers }) => {
     };
 
     return (
-        <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Cart</h1>
-            <div className="mb-4">
+        <div className="container mx-auto p-6">
+            <h1 className="text-3xl font-bold mb-6">Cart</h1>
+            <div className="mb-6">
                 <label className="block text-gray-700">Select Customer</label>
                 <select
                     value={selectedCustomer}
@@ -50,7 +50,7 @@ const Cart = ({ cart, customers }) => {
             </div>
             <div className="grid grid-cols-1 gap-4">
                 {Object.values(cart).map(item => (
-                    <div key={item.product_id} className="border rounded-lg p-4 shadow-lg">
+                    <div key={item.product_id} className="border rounded-lg p-4 shadow-lg bg-white">
                         <h2 className="text-xl font-semibold mb-2">{item.product_name}</h2>
                         <p className="text-gray-700 mb-1">Price: ${item.price}</p>
                         <p className="text-gray-700 mb-1">Quantity: 
@@ -70,7 +70,7 @@ const Cart = ({ cart, customers }) => {
                     </div>
                 ))}
             </div>
-            <div className="mt-4 p-4 border rounded-lg shadow-lg">
+            <div className="mt-6 p-4 border rounded-lg shadow-lg bg-white">
                 <h2 className="text-xl font-semibold">Total Price: ${calculateTotalPrice()}</h2>
                 <button
                     onClick={handlePlaceOrder}

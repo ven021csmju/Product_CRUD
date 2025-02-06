@@ -36,6 +36,14 @@ const Index = ({ products, search }) => {
         Inertia.get('/orders');
     };
 
+    const handleAddCustomer = () => {
+        Inertia.get('/customers/create');
+    };
+
+    const handleEditProduct = (id) => {
+        Inertia.get(`/products/${id}/edit`);
+    };
+
     return (
         <div className="container mx-auto p-4">
             <div className="flex justify-between items-center mb-4">
@@ -55,9 +63,15 @@ const Index = ({ products, search }) => {
                     </button>
                     <button
                         onClick={handleViewOrders}
-                        className="bg-purple-500 text-white p-2 rounded"
+                        className="bg-purple-500 text-white p-2 rounded mr-2"
                     >
                         View Orders
+                    </button>
+                    <button
+                        onClick={handleAddCustomer}
+                        className="bg-green-500 text-white p-2 rounded"
+                    >
+                        Add New Customer
                     </button>
                 </div>
             </div>
@@ -88,6 +102,12 @@ const Index = ({ products, search }) => {
                             className="bg-green-500 text-white p-2 rounded mt-2"
                         >
                             Add to Cart
+                        </button>
+                        <button
+                            onClick={() => handleEditProduct(product.id)}
+                            className="bg-yellow-500 text-white p-2 rounded mt-2"
+                        >
+                            Edit
                         </button>
                         <button
                             onClick={() => handleDeleteProduct(product.id)}

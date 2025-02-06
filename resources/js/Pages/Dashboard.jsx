@@ -1,7 +1,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import { Inertia } from '@inertiajs/inertia';
 
 export default function Dashboard() {
+    const handleAddCustomer = () => {
+        Inertia.get('/customers/create');
+    };
+
     return (
         <AuthenticatedLayout
             header={
@@ -20,6 +25,15 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="container mx-auto p-6">
+                <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
+                <button
+                    onClick={handleAddCustomer}
+                    className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+                >
+                    Add New Customer
+                </button>
             </div>
         </AuthenticatedLayout>
     );

@@ -7,7 +7,7 @@ const CreateOrder = () => {
     const [cart, setCart] = useState([
         { product_id: 1, quantity: 2, price: 100 },
         { product_id: 2, quantity: 1, price: 200 }
-    ]); // ตัวอย่างสินค้าในตะกร้า
+    ]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -17,23 +17,25 @@ const CreateOrder = () => {
     return (
         <div className="container mx-auto p-6">
             <Head title="Create Order" />
-            <h1 className="text-2xl font-bold mb-4">Select Customer</h1>
+            <h1 className="text-3xl font-bold mb-6">Select Customer</h1>
 
-            <form onSubmit={handleSubmit}>
-                <label className="block mb-2 font-semibold">Select Customer:</label>
-                <select
-                    className="border p-2 w-full mb-4"
-                    value={customerId}
-                    onChange={(e) => setCustomerId(e.target.value)}
-                    required
-                >
-                    <option value="">-- Choose a Customer --</option>
-                    {customers.map((customer) => (
-                        <option key={customer.id} value={customer.id}>
-                            {customer.name} ({customer.email})
-                        </option>
-                    ))}
-                </select>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block mb-2 font-semibold">Select Customer:</label>
+                    <select
+                        className="border p-2 w-full mb-4"
+                        value={customerId}
+                        onChange={(e) => setCustomerId(e.target.value)}
+                        required
+                    >
+                        <option value="">-- Choose a Customer --</option>
+                        {customers.map((customer) => (
+                            <option key={customer.id} value={customer.id}>
+                                {customer.name} ({customer.email})
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                 <button
                     type="submit"
